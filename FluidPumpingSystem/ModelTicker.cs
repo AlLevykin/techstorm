@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace FluidPumpingSystem
         private readonly SemaphoreSlim _simulationStateLock = new(1, 1);
         private readonly SemaphoreSlim _updateResultsLock = new(1, 1);
         private volatile SimulationState _simulationState;
+        private readonly Subject<int> _subject = new Subject<int>();
 
         public ModelTicker(IHubContext<ModelTickerHub> hub)
         {
@@ -29,6 +31,11 @@ namespace FluidPumpingSystem
         {
             get { return _simulationState; }
             private set { _simulationState = value; }
+        }
+
+        public IObservable<int> StreamResults()
+        {
+            return _subject;
         }
 
         private async void UpdateSimulationResults(object state)
