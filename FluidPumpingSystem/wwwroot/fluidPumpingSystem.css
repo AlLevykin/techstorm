@@ -1,0 +1,9 @@
+﻿.ct-chart {
+    width: 900px;
+    height: 250px;
+}
+
+.ct-series-a .ct-line {
+    stroke: red;
+    stroke-width: 1px;
+}
